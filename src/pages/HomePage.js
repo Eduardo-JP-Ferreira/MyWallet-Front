@@ -2,11 +2,13 @@ import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 
-export default function HomePage() {
+export default function HomePage({
+  token, setToken, nomeLogin
+}) {
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
+        <h1>Olá, {nomeLogin}</h1>
         <BiExit />
       </Header>
 
