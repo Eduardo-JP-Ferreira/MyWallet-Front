@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom"
 
 export default function SignUpPage({
   emailCadastro, setEmailCadastro, senhaCadastro, setSenhaCadastro,
-  nomeCadastro, setNomeCadastro, BASE_URL}) {
+  nomeCadastro, setNomeCadastro}) {
   const navigate = useNavigate()
   const [verificaSenha, setVerificaSenha] = useState("")
   
-
+  
     function executarCadastro(event){
       event.preventDefault();
       // alert(`nome: ${nomeCadastro}, email: ${emailCadastro}, senha: ${senhaCadastro}, DSenha: ${verificaSenha} `)
@@ -22,7 +22,7 @@ export default function SignUpPage({
           password: `${senhaCadastro}`
         }
         console.log(objetoCadastro)
-        const requisicao = axios.post(`${BASE_URL}/sign-up`, objetoCadastro)
+        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/sign-up`, objetoCadastro)
         requisicao.then(() => {
           alert("OK")
           navigate('/')
@@ -53,7 +53,7 @@ export default function SignUpPage({
 
         <input placeholder="Confirme a senha" type="password" required 
         autocomplete="new-password" onChange={e => setVerificaSenha(e.target.value)}/>
-        
+
         <button type="submit">Cadastrar</button>
       </form>
 

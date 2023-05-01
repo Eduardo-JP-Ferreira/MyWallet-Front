@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function SignInPage({
   emailLogin, setEmailLogin, senhaLogin, setSenhaLogin,
-  token, setToken, BASE_URL, setNomeLogin
+  token, setToken, setNomeLogin
 }) {
   const navigate = useNavigate()
 
@@ -20,7 +20,8 @@ export default function SignInPage({
         password: `${senhaLogin}`
       }
       console.log(objetoLogin)
-      const requisicao = axios.post(`${BASE_URL}/`, objetoLogin)
+      // REACT_APP_API_URL
+      const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/`, objetoLogin)
       requisicao.then((response) => {
     
         console.log("token: ",response.data.token)

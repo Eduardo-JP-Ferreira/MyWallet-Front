@@ -1,10 +1,45 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export default function HomePage({
-  token, setToken, nomeLogin
+  token, setToken, nomeLogin, operacao, setOperacao
 }) {
+  const navigate = useNavigate()
+  console.log("tok2", token)
+  const [usuario, setUsuario] = useState([])
+  
+
+  useEffect(() => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+    
+    axios.get(`${process.env.REACT_APP_API_URL}/home`, config)
+        .then((res) => {
+          setUsuario(res.data)
+          console.log(res.data)}
+        )
+        .catch((err) => alert("não deu"))
+}, [])
+  pega()
+  function pega(){
+    let saldo = 0
+    usuario.map((item)=>{
+      if(item.type === "deposit"){
+        saldo += Number(item.value)
+      }
+      else{
+        saldo -= Number(item.value)
+      }
+    })
+    setOperacao(saldo)
+  }
+
+  
   return (
     <HomeContainer>
       <Header>
@@ -14,36 +49,32 @@ export default function HomePage({
 
       <TransactionsContainer>
         <ul>
+          
+        {usuario.map((item)=>
           <ListItemContainer>
             <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
+              <span>{item.date}</span>
+              <strong>{item.description}</strong>
             </div>
-            <Value color={"negativo"}>120,00</Value>
+            <Value color={item.type}>{Number(item.value).toFixed(2)}</Value>
           </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+        )}
+          
         </ul>
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value color={"deposit"}>{Number(operacao).toFixed(2)}</Value>
         </article>
       </TransactionsContainer>
 
 
       <ButtonsContainer>
-        <button>
+        <button onClick={() => navigate("/nova-transacao/Entrada")}>
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button>
+        <button onClick={() => navigate("/nova-transacao/Saida")}>
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>
@@ -107,7 +138,7 @@ const ButtonsContainer = styled.section`
 const Value = styled.div`
   font-size: 16px;
   text-align: right;
-  color: ${(props) => (props.color === "positivo" ? "green" : "red")};
+  color: ${(props) => (props.color === "deposit" ? "green" : "red")};
 `
 const ListItemContainer = styled.li`
   display: flex;

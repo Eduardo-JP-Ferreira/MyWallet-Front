@@ -9,7 +9,6 @@ import { useState } from "react";
 
 export default function App() {
 
-const BASE_URL = "http://localhost:5000";
 
 const [emailCadastro, setEmailCadastro] = useState("")
 const [senhaCadastro, setSenhaCadastro] = useState("")
@@ -19,6 +18,7 @@ const [emailLogin, setEmailLogin] = useState("")
 const [senhaLogin, setSenhaLogin] = useState("")
 const [nomeLogin, setNomeLogin] = useState("")
 const [token, setToken] = useState("")
+const [operacao, setOperacao] = useState(10)
   return (
     <PagesContainer>
       <BrowserRouter>
@@ -26,19 +26,19 @@ const [token, setToken] = useState("")
           <Route path="/" element={<SignInPage 
           emailLogin={emailLogin} setEmailLogin={setEmailLogin}
           senhaLogin={senhaLogin} setSenhaLogin={setSenhaLogin} 
-          token={token} setToken={setToken} BASE_URL={BASE_URL}
+          token={token} setToken={setToken}
           setNomeLogin={setNomeLogin}
           />} />
           <Route path="/cadastro" element={<SignUpPage
           emailCadastro={emailCadastro} setEmailCadastro={setEmailCadastro} 
           senhaCadastro={senhaCadastro} setSenhaCadastro={setSenhaCadastro}
           nomeCadastro={nomeCadastro} setNomeCadastro={setNomeCadastro}
-          BASE_URL={BASE_URL}
           />} />
           <Route path="/home" element={<HomePage 
-          token={token} setToken={setToken} nomeLogin={nomeLogin}
+          token={token} setToken={setToken} nomeLogin={nomeLogin} 
+          operacao={operacao} setOperacao={setOperacao}
           />} />
-          <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
+          <Route path="/nova-transacao/:tipo" element={<TransactionsPage token={token}/>} />
         </Routes>
       </BrowserRouter>
     </PagesContainer>
