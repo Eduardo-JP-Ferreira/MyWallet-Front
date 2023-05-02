@@ -24,15 +24,14 @@ export default function SignInPage({
       const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/`, objetoLogin)
       requisicao.then((response) => {
     
-        console.log("token: ",response.data.token)
-        console.log("name: ",response.data.name)
         setNomeLogin(response.data.name)
+        localStorage.setItem("nomeLogin",response.data.name)
         setToken(response.data.token)
+        localStorage.setItem("token",response.data.token)
         navigate('/home')
         } )
       requisicao.catch(resposta => {
-        alert("ERRO REQ")
-        alert(resposta.response.data.message)
+        alert(resposta.response.data)
       })
   }
 

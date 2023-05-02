@@ -6,7 +6,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
 export default function HomePage({
-  token, setToken, nomeLogin, operacao, setOperacao
+  token, setToken, nomeLogin,setNomeLogin, operacao, setOperacao
 }) {
   const navigate = useNavigate()
   console.log("tok2", token)
@@ -39,12 +39,27 @@ export default function HomePage({
     setOperacao(saldo)
   }
 
+  function logout(){
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    axios.post(`${process.env.REACT_APP_API_URL}/logout`, {}, config)
+        .then(() => {
+            setToken(undefined)
+            setNomeLogin(undefined)
+            localStorage.clear()
+            navigate("/")
+        })
+        .catch((err) => alert(err.response.data))
+    
+  }
   
   return (
     <HomeContainer>
       <Header>
         <h1>Olá, {nomeLogin}</h1>
-        <BiExit />
+        <BiExit onClick={logout}/>
       </Header>
 
       <TransactionsContainer>
@@ -64,7 +79,7 @@ export default function HomePage({
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"deposit"}>{Number(operacao).toFixed(2)}</Value>
+          <Value color={Number(operacao) >= 0 ? "deposit" : "withdraw"}>{Number(operacao).toFixed(2)}</Value>
         </article>
       </TransactionsContainer>
 
@@ -98,6 +113,8 @@ const Header = styled.header`
   font-size: 26px;
   color: white;
 `
+
+
 const TransactionsContainer = styled.article`
   flex-grow: 1;
   background-color: #fff;

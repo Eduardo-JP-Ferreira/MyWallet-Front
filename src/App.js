@@ -16,8 +16,8 @@ const [nomeCadastro, setNomeCadastro] = useState("")
 
 const [emailLogin, setEmailLogin] = useState("")
 const [senhaLogin, setSenhaLogin] = useState("")
-const [nomeLogin, setNomeLogin] = useState("")
-const [token, setToken] = useState("")
+const [nomeLogin, setNomeLogin] = useState(localStorage.getItem("nomeLogin"))
+const [token, setToken] = useState(localStorage.getItem("token"))
 const [operacao, setOperacao] = useState(10)
   return (
     <PagesContainer>
@@ -36,7 +36,7 @@ const [operacao, setOperacao] = useState(10)
           />} />
           <Route path="/home" element={<HomePage 
           token={token} setToken={setToken} nomeLogin={nomeLogin} 
-          operacao={operacao} setOperacao={setOperacao}
+          operacao={operacao} setOperacao={setOperacao} setNomeLogin={setNomeLogin}
           />} />
           <Route path="/nova-transacao/:tipo" element={<TransactionsPage token={token}/>} />
         </Routes>
